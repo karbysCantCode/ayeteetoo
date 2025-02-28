@@ -76,6 +76,8 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+# EXCEPTION: Keep 3D model .obj files in Resources/Models/
+!Resources/3DAssets/*.obj
 *.iobj
 *.pch
 *.pdb
