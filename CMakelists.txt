@@ -13,9 +13,10 @@ project(main)
 #add cpps to exe
 file(GLOB SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Source/Source/*.cpp")
 
-file(GLOB_RECURSE HEADER_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/ImGui/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/stb_image/*.cpp")
+file(GLOB IMGUI_SOURCE CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/ImGui/*.cpp")
+file(GLOB_RECURSE HEADER_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/ImGui/backends/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/stb_image/*.cpp")
 
-set(ALL_SOURCE_FILES ${HEADER_SOURCE_FILES} ${SOURCE_FILES})
+set(ALL_SOURCE_FILES ${IMGUI_SOURCE} ${HEADER_SOURCE_FILES} ${SOURCE_FILES})
 
 add_executable(main ${ALL_SOURCE_FILES})
 
@@ -49,6 +50,7 @@ target_include_directories(main PUBLIC
 
     #libraries headers
     "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/",
+    "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/ImGui/",
     "${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glew-2.1.0/include/",
     "${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glfw-3.4/include/"
 )

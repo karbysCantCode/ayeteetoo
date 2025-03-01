@@ -14,9 +14,11 @@
 #include <sstream>
 
 #include "Camera.h"
+#include "Menus.h"
+#include "BasicShaders.h"
 
-int screenWidth = 800;
-int screenHeight = 800;
+int screenWidth = 960;
+int screenHeight = 540;
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
@@ -28,24 +30,6 @@ static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
     screenWidth = width;
     screenHeight = height;
-}
-
-static void parseFile(const std::string& filePath, std::string& resultHolder)
-{
-    std::ifstream file(filePath);
-    std::string line;
-    std::stringstream ss;
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-        {
-            ss << line << '\n';
-        }
-
-        resultHolder = ss.str();
-    }
-    //std::cout << ss.str() << std::endl;
-
 }
 
 static void processInput(GLFWwindow* window)
@@ -141,18 +125,6 @@ int main()
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
-    //vertex shader
-    const std::string vertexFilePath = SHADERS "Vertex.Shader";
-    std::string vertexShaderSourceStr;
-    parseFile(vertexFilePath, vertexShaderSourceStr);
-    const char* vertexShaderSource = vertexShaderSourceStr.c_str();
-
-    // fragment shader
-    const std::string fragmentFilePath = SHADERS "Fragment.Shader";
-    std::string fragmentShaderSourceStr;
-    parseFile(fragmentFilePath, fragmentShaderSourceStr);
-    const char* fragmentShaderSource = fragmentShaderSourceStr.c_str();
-
 
 
     //glfw window init
@@ -191,68 +163,15 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    //shaders
-    //vertec shader
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    //error checking
-    int  successVertex;
-    char infoLogVertex[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &successVertex);
-    if (!successVertex)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLogVertex);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLogVertex << std::endl;
-    }
 
-    // fragment shader
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    // error checking
-    int successFragment;
-    char infoLogFragment[512];
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &successFragment);
-    if (!successFragment)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLogFragment);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogFragment << std::endl;
-    }
-
-    //shader program
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-
-    //linking program
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    //error checking
-    int successProgram;
-    char infoLogProgram[512];
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &successProgram);
-
-    if (!successProgram) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLogProgram);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLogProgram << std::endl;
-    }
-    //use program
-    glUseProgram(shaderProgram);
-    //cleanup
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-
+    
+    // shaders
+    BasicShader shader(SHADERS "Vertex.Shader", SHADERS "Fragment.Shader");
 
     //vertex array
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VAO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     unsigned int VBO;
@@ -323,9 +242,9 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
-
-    glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
-    glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
+    shader.Bind();
+    glUniform1i(shader.GetUniformLocation("texture1"), 0);
+    glUniform1i(shader.GetUniformLocation("texture2"), 1);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture1);
@@ -341,16 +260,17 @@ int main()
 
     //projection matrices 
 
-    glUseProgram(shaderProgram);
-    int projectionLocation = glGetUniformLocation(shaderProgram, "projection");
+    int projectionLocation = shader.GetUniformLocation("projection");
 
-    int viewLocation = glGetUniformLocation(shaderProgram, "view");
+    int viewLocation = shader.GetUniformLocation("view");
 
-    int modelLocation = glGetUniformLocation(shaderProgram, "model");
+    int modelLocation = shader.GetUniformLocation("model");
     
 
     glm::mat4 proj;
     glm::mat4 view;
+
+    menuInit(window,screenWidth, screenHeight);
     //main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -369,7 +289,7 @@ int main()
 
 
         //priming + draw calls
-        glUseProgram(shaderProgram);
+        shader.Bind();
 
         glBindVertexArray(VAO);
 
@@ -389,6 +309,7 @@ int main()
 
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
+        menuRender();
 
         
 
@@ -397,13 +318,6 @@ int main()
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
-
-
-
-	std::cout << "Hello World!" << std::endl;
-
-
-
     glfwTerminate();
     return 0;
 }
