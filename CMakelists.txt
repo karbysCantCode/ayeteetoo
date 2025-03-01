@@ -13,9 +13,9 @@ project(main)
 #add cpps to exe
 file(GLOB SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Source/Source/*.cpp")
 
-file(GLOB_RECURSE IMGUI_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/ImGui/*.cpp")
+file(GLOB_RECURSE HEADER_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/ImGui/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/stb_image/*.cpp")
 
-set(ALL_SOURCE_FILES ${IMGUI_SOURCE_FILES} ${SOURCE_FILES})
+set(ALL_SOURCE_FILES ${HEADER_SOURCE_FILES} ${SOURCE_FILES})
 
 add_executable(main ${ALL_SOURCE_FILES})
 
@@ -24,17 +24,24 @@ add_executable(main ${ALL_SOURCE_FILES})
 #shader dir macro
 target_compile_definitions(main PUBLIC SHADERS="${CMAKE_CURRENT_SOURCE_DIR}/Resources/Shaders/") # DEVELOPMENT
 #target_compile_definitions(main PUBLIC SHADERS="./Resources/Shaders/") # RELEASE
-
+#texture dir macro
+target_compile_definitions(main PUBLIC TEXTURES="${CMAKE_CURRENT_SOURCE_DIR}/Resources/Textures/") # DEVELOPMENT
+#target_compile_definitions(main PUBLIC TEXTURES="./Resources/Textures/") # RELEASE
 
 
 #compile uhh libraries
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glfw-3.4" "${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glfw-3.4/lib") 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Source/HeaderLibraries/glm") 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glew-2.1.0/build/cmake" "${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glew-2.1.0/lib")
+#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glew-2.1.0/build/cmake" "${CMAKE_CURRENT_SOURCE_DIR}/CompiledLibraries/glew-2.1.0/lib")
+
+# Specify the path to GLEW
+set(GLEW_DIR "${CMAKE_SOURCE_DIR}/CompiledLibraries/glew-2.1.0")  # Path to GLEW
+include_directories("${GLEW_DIR}/include")
 
 add_definitions(-DGLEW_STATIC)
 
-
+file(GLOB_RECURSE GLEW_SOURCE "${GLEW_DIR}/src/*.c" "${GLEW_DIR}/include/*.h")
+add_library(glew ${GLEW_SOURCE})
 
 target_include_directories(main PUBLIC 
     #diy headers

@@ -9369,13 +9369,13 @@
 
 
 
+#line 10 "D:\\C++ programs\\ayeteetoo\\CompiledLibraries\\glew-2.1.0\\build\\glew.rc"
 
 
 
 
 
 
-#line 16 "D:\\C++ programs\\ayeteetoo\\CompiledLibraries\\glew-2.1.0\\build\\glew.rc"
 #line 17 "D:\\C++ programs\\ayeteetoo\\CompiledLibraries\\glew-2.1.0\\build\\glew.rc"
 
 
@@ -9393,9 +9393,9 @@ FILEFLAGS 0x00000001L
 #line 31 "D:\\C++ programs\\ayeteetoo\\CompiledLibraries\\glew-2.1.0\\build\\glew.rc"
 FILEOS 0x00000004L
 
+FILETYPE 0x00000007L
 
 
-FILETYPE 0x00000002L
 #line 37 "D:\\C++ programs\\ayeteetoo\\CompiledLibraries\\glew-2.1.0\\build\\glew.rc"
 FILESUBTYPE 0x00000000L
 BEGIN
@@ -9484,7 +9484,7 @@ BEGIN
             VALUE "InternalName", "GLEW\0"
             VALUE "LegalCopyright", "© 2002-2008 Milan Ikits & Marcelo Magallon\0"
             VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "glew32d.dll" "\0"
+            VALUE "OriginalFilename", "glew32sd.dll" "\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "The OpenGL Extension Wrangler Library\0"
             VALUE "ProductVersion", "2,1,0,0\0"
