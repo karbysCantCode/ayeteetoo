@@ -4,12 +4,7 @@
 int* screenWidth;
 int* screenHeight;
 
-unsigned int highestZIndex;
 
-unsigned int VBO;
-unsigned int VAO;
-unsigned int EBO;
-unsigned int SBO;
 
 enum MenuEnum
 {
@@ -50,6 +45,7 @@ void menuInit(GLFWwindow* window, int& ScreenWidth, int& ScreenHeight)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 450");
     ImGui::StyleColorsDark();
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 
    
@@ -68,9 +64,14 @@ void menuRender()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Hellow!");
+    //ImGuiViewport* viewport = ImGui::GetMainViewport();
 
-    ImGui::End();
+    //// Now you can pass the ImGuiID to DockSpaceOverViewport
+    //ImGui::DockSpaceOverViewport(viewport->ID, viewport);
+
+    //ImGui::Begin("Hellow!");
+
+    //ImGui::End();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

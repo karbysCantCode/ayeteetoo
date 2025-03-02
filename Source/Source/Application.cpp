@@ -23,6 +23,10 @@ int screenHeight = 540;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
+bool mouseLockedOnCamera = true;
+float lastMouseLockToggleTime = 0.0f;
+constexpr float mouseLockToggleDebounce = 0.2f; // in seconds
+
 Camera camera;
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -38,25 +42,52 @@ static void processInput(GLFWwindow* window)
     camera.registerRelativeCameraSpeed(deltaTime);
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.registerW();
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.registerS();
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.registerA();
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.registerD();
+    if (mouseLockedOnCamera)
+    {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            camera.registerW();
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            camera.registerS();
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            camera.registerA();
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            camera.registerD();
+    }
+    if ((glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) && ((glfwGetTime() - lastMouseLockToggleTime) > mouseLockToggleDebounce))
+    {
+        lastMouseLockToggleTime = glfwGetTime();
+        mouseLockedOnCamera = !mouseLockedOnCamera;
+        if (mouseLockedOnCamera)
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+        else
+        {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+    }
+    std::cout << glfwGetTime() << " " << ((glfwGetTime() - lastMouseLockToggleTime) > mouseLockToggleDebounce) << std::endl;
 }
 
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.registerScroll(yoffset);
+    if (mouseLockedOnCamera)
+    {
+        camera.registerScroll(yoffset);
+    }
 }
 
 static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    camera.registerRelativeCameraSpeed(deltaTime);
-    camera.registerMouseMove(xpos, ypos);
+    if (mouseLockedOnCamera)
+    {
+        camera.registerRelativeCameraSpeed(deltaTime);
+        camera.registerMouseMove(xpos, ypos);
+    }
+    else
+    {
+        camera.setLastPositions(xpos, ypos);
+    }
 }
 
 int main() 
@@ -162,8 +193,10 @@ int main()
     glfwSetScrollCallback(window, scroll_callback);
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
-
+    glfwSwapInterval(1);  // Enable V-Sync // vsync
     
     // shaders
     BasicShader shader(SHADERS "Vertex.Shader", SHADERS "Fragment.Shader");

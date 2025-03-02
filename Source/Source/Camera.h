@@ -82,6 +82,11 @@ public:
 
 		cameraFront = glm::normalize(direction);
 	}
+	inline void setLastPositions(double xpos, double ypos)
+	{
+		m_LastX = xpos;
+		m_LastY = ypos;
+	}
 };
 
 #endif CAMERA_H
