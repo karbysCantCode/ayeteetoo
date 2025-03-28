@@ -1,12 +1,9 @@
 #include "GL/glew.h"
-
 #include "GLFW/glfw3.h"
-
-#include "stb_image/stb_image.h"
-
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "stb_image/stb_image.h"
 
 #include <iostream>
 #include <fstream>
@@ -16,6 +13,13 @@
 #include "Camera.h"
 #include "Menus.h"
 #include "BasicShaders.h"
+
+
+
+
+
+
+
 
 int screenWidth = 960;
 int screenHeight = 540;
@@ -27,7 +31,14 @@ bool mouseLockedOnCamera = true;
 float lastMouseLockToggleTime = 0.0f;
 constexpr float mouseLockToggleDebounce = 0.2f; // in seconds
 
+
 Camera camera;
+
+
+
+
+
+
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -90,9 +101,15 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     }
 }
 
-int main() 
+
+
+
+
+
+
+int main()
 {
-    // data!
+    // data
     float vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -136,13 +153,6 @@ int main()
     -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
-
-    unsigned int indices[] = {  // note that we start from 0!
-        0, 1, 3,   // first triangle
-        1, 2, 3    // second triangle
-    };
-
-
     glm::vec3 cubePositions[] = {
         glm::vec3(0.0f,  0.0f,  0.0f),
         glm::vec3(2.0f,  5.0f, -15.0f),
@@ -158,16 +168,14 @@ int main()
 
 
 
-    //glfw window init
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-   
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
 
 
     GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
@@ -177,16 +185,16 @@ int main()
         glfwTerminate();
         return -1;
     }
-    glfwMakeContextCurrent(window);
 
+
+    glfwMakeContextCurrent(window);
     if (glewInit() != GLEW_OK) { // get real angy if you havent checked this :)
         std::cerr << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
 
+
     glViewport(0, 0, screenWidth, screenHeight);
-   
-    
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -194,10 +202,17 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSwapInterval(1);  // Enable V-Sync // vsync
-    
+
+
+
+
+
+
+
+
     // shaders
     BasicShader shader(SHADERS "Vertex.Shader", SHADERS "Fragment.Shader");
 
@@ -213,17 +228,14 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    //vertex atrribs
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // positions
     glEnableVertexAttribArray(0);
 
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // tex coords
     glEnableVertexAttribArray(1);
+
+
 
     unsigned int lightVAO;
     glGenVertexArrays(1, &lightVAO);
@@ -232,13 +244,16 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+
+
+
+
+
     //texture loading
     stbi_set_flip_vertically_on_load(true);
 
-
     int texWidth, texHeight, nrChannels;
     unsigned char* data = stbi_load(TEXTURES "container.jpg", &texWidth, &texHeight, &nrChannels, 0);
-
 
     //texture gen
     unsigned int texture1;
@@ -279,6 +294,7 @@ int main()
     {
         std::cout << "Failed to load texture" << std::endl;
     }
+
     stbi_image_free(data);
     shader.Bind();
     glUniform1i(shader.GetUniformLocation("texture1"), 0);
@@ -291,31 +307,33 @@ int main()
 
 
 
-    //wire frame mode!
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //fill mode (default)
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    //projection matrices 
 
     int projectionLocation = shader.GetUniformLocation("projection");
 
     int viewLocation = shader.GetUniformLocation("view");
 
     int modelLocation = shader.GetUniformLocation("model");
-    
+
 
     glm::mat4 proj;
     glm::mat4 view;
 
-    menuInit(window,screenWidth, screenHeight);
-    //main loop
+
+
+
+
+
+
+
+
     while (!glfwWindowShouldClose(window))
     {
         // input processing
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
 
         processInput(window);
 
@@ -331,11 +349,15 @@ int main()
 
         glBindVertexArray(VAO);
 
+
+
         proj = glm::perspective(glm::radians(camera.currentFov), (float)screenWidth / (float)screenHeight, 0.1f, 1000.0f);
         glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, &proj[0][0]);
 
         view = glm::lookAt(camera.cameraPos, camera.cameraPos + camera.cameraFront, camera.cameraUp);
         glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
+
+
 
         for (unsigned int i = 0; i < 10; i++)
         {
@@ -348,7 +370,7 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
-        
+
 
 
         // check and call events and swap the buffer
@@ -358,4 +380,3 @@ int main()
     glfwTerminate();
     return 0;
 }
-
