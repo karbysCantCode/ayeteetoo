@@ -5,10 +5,12 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include <iostream>
+
 class Camera
 {
 private:
-	const float m_CameraSpeed = 0.05;
+	const float m_CameraSpeed = 10;
 
 	const float m_Sensitivity = 0.1f;
 	float m_Yaw = -90.0f, m_Pitch, M_Roll;
@@ -34,19 +36,19 @@ public:
 	}
 	inline void registerW()
 	{
-		cameraPos += m_CameraSpeed * cameraFront;
+		cameraPos += m_RelativeCameraSpeed * cameraFront;
 	}
 	inline void registerS()
 	{
-		cameraPos -= m_CameraSpeed * cameraFront;
+		cameraPos -= m_RelativeCameraSpeed * cameraFront;
 	}
 	inline void registerA()
 	{
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * m_CameraSpeed;
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * m_RelativeCameraSpeed;
 	}
 	inline void registerD()
 	{
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * m_CameraSpeed;
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * m_RelativeCameraSpeed;
 	}
 
 	inline void registerScroll(int yoffset)

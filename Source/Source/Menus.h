@@ -10,8 +10,24 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-void menuInit(GLFWwindow* window, int& ScreenWidth, int& ScreenHeight);
-void menuShutdown();
+#include <iostream>
 
-void menuRender();
+class MenuManager
+{
+private:
+	void MenuInit(GLFWwindow* window, int& ScreenWidth, int& ScreenHeight);
+
+	int* screenWidth;
+	int* screenHeight;
+public:
+	glm::vec3 objectColor = { 1.0f, 0.5f, 0.31f };
+	glm::vec3 lightColor = {0.0f, 1.0f, 1.0f};
+	float lightOrbitRadius = 5.0f;
+	float lightOrbitSpeed = 20.0f;
+
+	MenuManager(GLFWwindow* window, int& ScreenWidth, int& ScreenHeight);
+	void MenuShutdown();
+
+	void MenuRender();
+};
 
