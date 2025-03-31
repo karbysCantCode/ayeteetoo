@@ -1,7 +1,7 @@
-prefix=D:/C++ programs/ayeteetoo/out/install/x64-Debug
+prefix=D:/CPP-Projects/ayeteetoo/out/install/x64-Debug
 exec_prefix=${prefix}
-includedir=D:/C++ programs/ayeteetoo/out/install/x64-Debug/include
-libdir=D:/C++ programs/ayeteetoo/out/install/x64-Debug/lib
+includedir=D:/CPP-Projects/ayeteetoo/out/install/x64-Debug/include
+libdir=D:/CPP-Projects/ayeteetoo/out/install/x64-Debug/lib
 
 Name: GLFW
 Description: A multi-platform library for OpenGL, window and input

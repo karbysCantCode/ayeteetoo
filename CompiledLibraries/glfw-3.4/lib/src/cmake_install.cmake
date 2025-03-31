@@ -1,8 +1,8 @@
-# Install script for directory: D:/C++ programs/ayeteetoo/CompiledLibraries/glfw-3.4/src
+# Install script for directory: D:/CPP-Projects/ayeteetoo/CompiledLibraries/glfw-3.4/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "D:/C++ programs/ayeteetoo/out/install/x64-Debug")
+  set(CMAKE_INSTALL_PREFIX "D:/CPP-Projects/ayeteetoo/out/install/x64-Debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,6 +33,6 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "D:/C++ programs/ayeteetoo/CompiledLibraries/glfw-3.4/lib/src/glfw3.lib")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "D:/CPP-Projects/ayeteetoo/CompiledLibraries/glfw-3.4/lib/src/glfw3.lib")
 endif()
 

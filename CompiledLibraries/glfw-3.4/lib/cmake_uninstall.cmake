@@ -1,9 +1,9 @@
 
-if (NOT EXISTS "D:/C++ programs/ayeteetoo/CompiledLibraries/glfw-3.4/lib/install_manifest.txt")
-    message(FATAL_ERROR "Cannot find install manifest: \"D:/C++ programs/ayeteetoo/CompiledLibraries/glfw-3.4/lib/install_manifest.txt\"")
+if (NOT EXISTS "D:/CPP-Projects/ayeteetoo/CompiledLibraries/glfw-3.4/lib/install_manifest.txt")
+    message(FATAL_ERROR "Cannot find install manifest: \"D:/CPP-Projects/ayeteetoo/CompiledLibraries/glfw-3.4/lib/install_manifest.txt\"")
 endif()
 
-file(READ "D:/C++ programs/ayeteetoo/CompiledLibraries/glfw-3.4/lib/install_manifest.txt" files)
+file(READ "D:/CPP-Projects/ayeteetoo/CompiledLibraries/glfw-3.4/lib/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 
 foreach (file ${files})

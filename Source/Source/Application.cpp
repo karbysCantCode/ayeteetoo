@@ -252,13 +252,14 @@ int main()
 
 
 
-    int objectColorLocation = shader.GetUniformLocation("objectColor");
-
     int lightColorLocation = shader.GetUniformLocation("lightColor");
+
 
     int lightPosLocation = shader.GetUniformLocation("lightPos");
 
     int viewPosLocation = shader.GetUniformLocation("viewPos");
+
+
 
     int projectionLocation = shader.GetUniformLocation("projection");
 
@@ -266,11 +267,24 @@ int main()
 
     int modelLocation = shader.GetUniformLocation("model");
 
+
+    int materialAmbientLocation = shader.GetUniformLocation("material.ambient");
+
+    int materialDiffuseLocation = shader.GetUniformLocation("material.diffuse");
+
+    int materialSpecularLocation = shader.GetUniformLocation("material.specular");
+
+    int materialShininessLocation = shader.GetUniformLocation("material.shininess");
+
+
+
     int lightProjectionLocation = lightSourceShader.GetUniformLocation("projection");
 
     int lightViewLocation = lightSourceShader.GetUniformLocation("view");
 
     int lightModelLocation = lightSourceShader.GetUniformLocation("model");
+
+    int lightSourceColorLocation = lightSourceShader.GetUniformLocation("lightColor");
 
     glm::mat4 proj;
     glm::mat4 view;
@@ -311,9 +325,13 @@ int main()
         //priming + draw calls
         shader.Bind();
         
-        glUniform3f(objectColorLocation, menu.objectColor.r, menu.objectColor.g, menu.objectColor.b);
         glUniform3f(lightColorLocation, menu.lightColor.r, menu.lightColor.g, menu.lightColor.b);
         glUniform3f(viewPosLocation, camera.cameraPos.x, camera.cameraPos.y, camera.cameraPos.z);
+
+        glUniform3f(materialAmbientLocation, menu.materialSurfaceColor.r, menu.materialSurfaceColor.g, menu.materialSurfaceColor.b);
+        glUniform3f(materialDiffuseLocation, menu.materialSurfaceColor.r, menu.materialSurfaceColor.g, menu.materialSurfaceColor.b);
+        glUniform3f(materialSpecularLocation, menu.materialSpecular.r, menu.materialSpecular.g, menu.materialSpecular.b);
+        glUniform1f(materialShininessLocation, pow(2,menu.materialShininess));
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(menu.lightOrbitSpeed), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -353,7 +371,7 @@ int main()
         glUniformMatrix4fv(lightProjectionLocation, 1, GL_FALSE, &proj[0][0]);
         glUniformMatrix4fv(lightViewLocation, 1, GL_FALSE, &view[0][0]);
         glUniformMatrix4fv(lightModelLocation, 1, GL_FALSE, &model[0][0]);
-    
+        glUniform3f(lightSourceColorLocation, menu.lightColor.r, menu.lightColor.g, menu.lightColor.b);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         menu.MenuRender();

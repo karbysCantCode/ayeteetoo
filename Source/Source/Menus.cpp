@@ -35,10 +35,12 @@ void MenuManager::MenuRender()
 
     ImGui::Begin("Debuuu");
 
-    ImGui::ColorEdit3("Object Color", &objectColor[0]);
     ImGui::ColorEdit3("Light Color", &lightColor[0]);
     ImGui::SliderFloat("Light Orbit Radius", &lightOrbitRadius, 0, 50);
     ImGui::SliderFloat("Light Orbit Speed", &lightOrbitSpeed, 0, 1000);
+    ImGui::ColorEdit3("Material Surface Color", &materialSurfaceColor[0]);
+    ImGui::ColorEdit3("Material Specular Color", &materialSpecular[0]);
+    ImGui::SliderFloat("Material Shininess", &materialShininess, 0, 19);
     /*std::cout << Menus::objectColor.r << " " << Menus::objectColor.g << " " << Menus::objectColor.b << " ";
     std::cout << Menus::lightColor.r << " " << Menus::lightColor.g << " " << Menus::lightColor.b << std::endl;*/
     ImGui::End();

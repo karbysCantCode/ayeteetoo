@@ -1,8 +1,8 @@
-# Install script for directory: D:/C++ programs/ayeteetoo/CompiledLibraries/glfw-3.4/docs
+# Install script for directory: D:/CPP-Projects/ayeteetoo/CompiledLibraries/glfw-3.4/docs
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "D:/C++ programs/ayeteetoo/out/install/x64-Debug")
+  set(CMAKE_INSTALL_PREFIX "D:/CPP-Projects/ayeteetoo/out/install/x64-Debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
